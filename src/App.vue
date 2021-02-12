@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import draggable from "vuedraggable";
 import ToolbarButton from './components/ToolbarButton.vue';
 
@@ -72,6 +72,13 @@ const availableButtons = availableToolbar.toolbar.filter((item) => !selectedButt
 const listSelected = ref(selectedButtons.map((item) => ({ name: item, id: item })));
 const listAvailable = ref(availableButtons.map((item) => ({ name: item, id: item })));
 
+// Stringified version for submitting in #buttons-selected.
+const selectedItems = computed(() => `[${listSelected.value.map((item) => `"${item.name}"`).join(',')}]`);
+
+// Update textarea
+watch(() => selectedItems.value, (currSelected, prevSelected) => {
+  selected.value = currSelected;
+});
 </script>
 
 <style scoped>
