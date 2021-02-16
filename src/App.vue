@@ -52,8 +52,8 @@ import draggable from "vuedraggable";
 import ToolbarButton from './components/ToolbarButton.vue';
 
 // init
-const available = document.getElementById("buttons-available");
-const selected = document.getElementById("buttons-selected");
+const available = document.getElementById("ckeditor5-toolbar__buttons-available");
+const selected = document.getElementById("ckeditor5-toolbar__buttons-selected");
 [available, selected].forEach((el) => {
   el.style.visibility = "hidden";
 });
@@ -80,11 +80,3 @@ watch(() => selectedItems.value, (currSelected, prevSelected) => {
   selected.value = currSelected;
 });
 </script>
-
-<style scoped>
-  .ckeditor5-toolbar--disabled {
-    margin-bottom: 2rem;
-    display: flex;
-    gap: 2rem;
-  }
-</style>
