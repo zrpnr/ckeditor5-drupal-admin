@@ -6,6 +6,7 @@
       >
       <draggable
         class="ckeditor5-toolbar-available__buttons"
+        tag="ul"
         :list="listAvailable"
         :group="group"
         itemKey="id"
@@ -21,6 +22,7 @@
       >
       <draggable
         class="ckeditor5-toolbar-divider__buttons"
+        tag="ul"
         :list="dividers"
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
         itemKey="id"
@@ -35,6 +37,7 @@
     <label for="ckeditor5-toolbar-active__buttons">Active toolbar</label>
     <draggable
       class="ckeditor5-toolbar-active__buttons"
+      tag="ul"
       :list="listSelected"
       :group="group"
       itemKey="id"
@@ -54,8 +57,11 @@ import ToolbarButton from './components/ToolbarButton.vue';
 // init
 const available = document.getElementById("ckeditor5-toolbar__buttons-available");
 const selected = document.getElementById("ckeditor5-toolbar__buttons-selected");
-[available, selected].forEach((el) => {
-  el.style.visibility = "hidden";
+const selectedField = document.querySelector('.form-item-editor-settings-toolbar-items');
+[available, selected, selectedField].forEach((el) => {
+  if (el) {
+    el.style.visibility = "hidden";
+  }
 });
 
 // @todo: validate the provided values.

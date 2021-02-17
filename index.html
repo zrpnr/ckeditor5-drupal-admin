@@ -5,13 +5,27 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <style>
+    .ckeditor5-toolbar__button {
+      font-size: 18px;
+    }
+    .ckeditor5-toolbar__button:focus  {
+      outline: 1px solid #00ff00;
+    }
+    .ckeditor5-toolbar__button[aria-expanded="false"] + .ckeditor5-toolbar__tooltip {
+      visibility: hidden;
+    }
+    .ckeditor5-toolbar__button[aria-expanded="true"] + .ckeditor5-toolbar__tooltip {
+      visibility: visible;
+    }
+    </style>
   </head>
   <body>
     <div id="ckeditor5-toolbar__app">Inner Content</div>
     <div id="ckeditor5-toolbar__buttons-available">
       ["heading","bold","italic","blockquote","imageUpload","media"]
     </div>
-    <textarea name="ckeditor5-toolbar__buttons-selected" id="ckeditor5__buttons-selected" cols="30" rows="10">["heading","bold","italic","imageUpload"]</textarea>
+    <textarea name="ckeditor5-toolbar__buttons-selected" id="ckeditor5-toolbar__buttons-selected" cols="30" rows="10">["heading","bold","italic","imageUpload"]</textarea>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
