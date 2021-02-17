@@ -60,7 +60,7 @@ const selected = document.getElementById("ckeditor5-toolbar__buttons-selected");
 const selectedField = document.querySelector('.form-item-editor-settings-toolbar-items');
 [available, selected, selectedField].forEach((el) => {
   if (el) {
-    el.style.visibility = "hidden";
+    el.style.display = "none";
   }
 });
 
