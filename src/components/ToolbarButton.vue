@@ -1,21 +1,18 @@
 <template>
-  <li>
-    <button
-      :title="name"
+  <li :class="itemSelector" v-on:mouseover="expand" v-on:mouseout="hide">
+    <a
+      :class="buttonSelector"
       role="button"
-      :class="selector"
+      href=""
       aria-describedby="tooltip"
       :aria-expanded="isExpanded"
-      v-on:click="selectButton"
+      v-on:click.prevent="selectButton"
       v-on:focus="expand"
-      v-on:mouseover="expand"
-      v-on:mouseout="hide"
       v-on:blur="hide"
       @keyup.esc="hide"
-      tabindex="0"
     >
       <span class="visually-hidden" aria-hidden="true">{{ name }}</span>
-    </button>
+    </a>
     <span class="ckeditor5-toolbar__tooltip" role="tooltip">{{ name }}</span>
   </li>
 </template>
@@ -39,16 +36,12 @@ const hide = () => {
 const toggle = () => {
   isExpanded.value = !isExpanded.value;
 }
-const selectButton = (event) => {
-  console.log(event, isExpanded);
-  if (event) {
-    event.preventDefault();
-    toggle();
-  }
+const selectButton = () => {
+  toggle();
 }
 
-const id = `ckeditor5-toolbar__button-${props.id}`;
-const selector = `ckeditor5-toolbar__button ${id}`;
+const itemSelector = `ckeditor5-toolbar__item ckeditor5-toolbar__item-${props.id}`;
+const buttonSelector = `ckeditor5-toolbar__button ckeditor5-toolbar__button-${props.id}`;
 const tooltip = `ckeditor5-toolbar__tooltip-${props.id}`
 
 </script>

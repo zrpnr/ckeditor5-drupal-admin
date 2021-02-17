@@ -5,7 +5,7 @@
         >Available buttons</label
       >
       <draggable
-        class="ckeditor5-toolbar-available__buttons"
+        class="ckeditor5-toolbar__tray ckeditor5-toolbar-available__buttons"
         tag="ul"
         :list="listAvailable"
         :group="group"
@@ -21,7 +21,7 @@
         >Button divider</label
       >
       <draggable
-        class="ckeditor5-toolbar-divider__buttons"
+        class="ckeditor5-toolbar__tray ckeditor5-toolbar-divider__buttons"
         tag="ul"
         :list="dividers"
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
@@ -36,7 +36,7 @@
   <div class="ckeditor5-toolbar-active">
     <label for="ckeditor5-toolbar-active__buttons">Active toolbar</label>
     <draggable
-      class="ckeditor5-toolbar-active__buttons"
+      class="ckeditor5-toolbar__tray ckeditor5-toolbar-active__buttons"
       tag="ul"
       :list="listSelected"
       :group="group"
