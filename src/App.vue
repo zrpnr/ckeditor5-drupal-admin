@@ -75,8 +75,12 @@ const dividers = [{ name: "|", id: "divider" }, { name: "-", id: 'wrapping' }];
 const selectedButtons = [...selectedToolbar.toolbar];
 const availableButtons = availableToolbar.toolbar.filter((item) => !selectedButtons.includes(item));
 
-const listSelected = ref(selectedButtons.map((item) => ({ name: item, id: item })));
-const listAvailable = ref(availableButtons.map((item) => ({ name: item, id: item })));
+const mapButtons = (name) => {
+  return dividers.find((divider) => divider.name == name) ?? { name, id: name }; 
+}
+
+const listSelected = ref(selectedButtons.map(mapButtons));
+const listAvailable = ref(availableButtons.map(mapButtons));
 
 // Stringified version for submitting in #buttons-selected.
 const selectedItems = computed(() => `[${listSelected.value.map((item) => `"${item.name}"`).join(',')}]`);

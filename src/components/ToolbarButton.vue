@@ -11,9 +11,9 @@
       v-on:blur="hide"
       @keyup.esc="hide"
     >
-      <span class="visually-hidden" aria-hidden="true">{{ name }}</span>
+      <span class="visually-hidden" aria-hidden="true">{{ id }}</span>
     </a>
-    <span class="ckeditor5-toolbar__tooltip" role="tooltip">{{ name }}</span>
+    <span class="ckeditor5-toolbar__tooltip" role="tooltip">{{ id }}</span>
   </li>
 </template>
 
