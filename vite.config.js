@@ -18,7 +18,8 @@ export default {
         globals: {
           sortablejs: 'Sortable',
           vue: 'Vue',
-        }
+        },
+        name: 'CKEDITOR5_ADMIN'
       },
     }
   }

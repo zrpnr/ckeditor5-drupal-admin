@@ -136,6 +136,10 @@
       ["heading","bold","italic","blockquote","imageUpload","media"]
     </div>
     <textarea name="ckeditor5-toolbar__buttons-selected" id="ckeditor5-toolbar__buttons-selected" cols="30" rows="10">["heading","bold","italic","|","imageUpload"]</textarea>
-    <script type="module" src="/src/main.js"></script>
+    <script type="module">
+      import app from '/src/main.js';
+      const { mountApp } = app;
+      mountApp();
+    </script>
   </body>
 </html>
