@@ -1,9 +1,7 @@
 <template>
   <div class="ckeditor5-toolbar--disabled">
     <div class="ckeditor5-toolbar-available">
-      <label for="ckeditor5-toolbar-available__buttons"
-        >Available buttons</label
-      >
+      <label for="ckeditor5-toolbar-available__buttons">Available buttons</label>
       <draggable
         class="ckeditor5-toolbar__tray ckeditor5-toolbar-available__buttons"
         tag="ul"
@@ -15,27 +13,27 @@
           <ToolbarButton
             :id="element.id"
             :name="element.name"
-            :actions="{ down: () => moveToList(listAvailable, listSelected, element.id) }"
+            :actions="{ down: () => moveToList(listAvailable, listSelected, element) }"
           />
         </template>
       </draggable>
     </div>
     <div class="ckeditor5-toolbar-divider">
-      <label for="ckeditor5-toolbar-divider__buttons"
-        >Button divider</label
-      >
+      <label for="ckeditor5-toolbar-divider__buttons">Button divider</label>
       <draggable
         class="ckeditor5-toolbar__tray ckeditor5-toolbar-divider__buttons"
         tag="ul"
         :list="dividers"
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
         itemKey="id"
+        :clone="makeCopy"
       >
         <template #item="{ element }">
           <ToolbarButton
             :id="element.id"
             :name="element.name"
-            :actions="{ down: () => copyToList(dividers, listSelected, element.id) }"
+            :actions="{ down: () => copyToList(dividers, listSelected, element) }"
+            :alert="() => listSelf('dividers', dividers, element)"
           />
         </template>
       </draggable>
@@ -55,9 +53,9 @@
           :id="element.id"
           :name="element.name"
           :actions="{
-            up: () => moveToList(listSelected, listAvailable, element.id),
-            left: () => moveUpList(listSelected, element.id),
-            right: () => moveDnList(listSelected, element.id),
+            up: () => moveToList(listSelected, listAvailable, element),
+            left: () => moveUpList(listSelected, element),
+            right: () => moveDnList(listSelected, element),
           }"
         />
       </template>
@@ -66,7 +64,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, watch } from "vue";
+import { computed, shallowReactive, watch } from "vue";
 import draggable from "vuedraggable";
 import ToolbarButton from './components/ToolbarButton.vue';
 
@@ -87,31 +85,33 @@ const selectedToolbar = JSON.parse(`{"toolbar": ${selected.value} }`);
 
 // basic setup
 const group = "toolbar";
-const dividers = [{ name: "|", id: "divider" }, { name: "-", id: 'wrapping' }];
+const dividers = [{ name: "|", id: "divider" }, { name: "-", id: "wrapping" }];
 const selectedButtons = [...selectedToolbar.toolbar];
-const availableButtons = availableToolbar.toolbar.filter((item) => !selectedButtons.includes(item));
+const availableButtons = availableToolbar.toolbar.filter(
+  (item) => !selectedButtons.includes(item)
+);
 
-const mapButtons = (name) => {
-  return dividers.find((divider) => divider.name == name) ?? { name, id: name }; 
-}
+const mapButtons = (name) => (
+  dividers.find((divider) => divider.name == name) ?? { name, id: name }
+);
 
 // Create reactive lists.
-const listSelected = reactive(selectedButtons.map(mapButtons));
-const listAvailable = reactive(availableButtons.map(mapButtons));
+const listSelected = shallowReactive(selectedButtons.map(mapButtons));
+const listAvailable = shallowReactive(availableButtons.map(mapButtons));
 
-const copyToList = (from, to, id) => {
-  const button = from.find((item) => item.id === id);
-  to.push(button);
+// Without a copy, select by index would return an lower duplicate.
+const makeCopy = (original) => (Object.assign({}, original));
+
+const copyToList = (from, to, element) => {
+  to.push(makeCopy(element));
 }
-const moveToList = (from, to, id) => {
-  copyToList(from, to, id);
-  const index = from.findIndex((item) => item.id === id);
-  from.splice(index, 1);
+const moveToList = (from, to, element) => {
+  to.push(element);
+  from.splice(from.indexOf(element), 1);
 }
 
-const moveInList = (list, id, dir) => {
-  const index = list.findIndex((item) => item.id === id);
-
+const moveInList = (list, element, dir) => {
+  const index = list.indexOf(element);
   // If moving up, check it is not the first, else check it is not the last.
   const condition = dir < 0 ? index > 0 : index < list.length - 1;
   if (condition) {
@@ -119,12 +119,12 @@ const moveInList = (list, id, dir) => {
   }
 }
 
-const moveUpList = (list, id) => {
-  moveInList(list, id, -1);
+const moveUpList = (list, element) => {
+  moveInList(list, element, -1);
 }
 
-const moveDnList = (list, id) => {
-  moveInList(list, id, 1);
+const moveDnList = (list, element) => {
+  moveInList(list, element, 1);
 }
 
 // Stringified version for submitting in #buttons-selected.
