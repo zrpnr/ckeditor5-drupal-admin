@@ -12,7 +12,11 @@
         itemKey="id"
       >
         <template #item="{ element }">
-          <ToolbarButton :id="element.id" :name="element.name" />
+          <ToolbarButton
+            :id="element.id"
+            :name="element.name"
+            :actions="{ down: () => moveToList(listAvailable, listSelected, element.id) }"
+          />
         </template>
       </draggable>
     </div>
@@ -28,7 +32,11 @@
         itemKey="id"
       >
         <template #item="{ element }">
-          <ToolbarButton :id="element.id" :name="element.name" />
+          <ToolbarButton
+            :id="element.id"
+            :name="element.name"
+            :actions="{ down: () => copyToList(dividers, listSelected, element.id) }"
+          />
         </template>
       </draggable>
     </div>
@@ -43,14 +51,22 @@
       itemKey="id"
     >
       <template #item="{ element }">
-        <ToolbarButton :id="element.id" :name="element.name" />
+        <ToolbarButton
+          :id="element.id"
+          :name="element.name"
+          :actions="{
+            up: () => moveToList(listSelected, listAvailable, element.id),
+            left: () => moveUpList(listSelected, element.id),
+            right: () => moveDnList(listSelected, element.id),
+          }"
+        />
       </template>
     </draggable>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 import draggable from "vuedraggable";
 import ToolbarButton from './components/ToolbarButton.vue';
 
@@ -79,11 +95,40 @@ const mapButtons = (name) => {
   return dividers.find((divider) => divider.name == name) ?? { name, id: name }; 
 }
 
-const listSelected = ref(selectedButtons.map(mapButtons));
-const listAvailable = ref(availableButtons.map(mapButtons));
+// Create reactive lists.
+const listSelected = reactive(selectedButtons.map(mapButtons));
+const listAvailable = reactive(availableButtons.map(mapButtons));
+
+const copyToList = (from, to, id) => {
+  const button = from.find((item) => item.id === id);
+  to.push(button);
+}
+const moveToList = (from, to, id) => {
+  copyToList(from, to, id);
+  const index = from.findIndex((item) => item.id === id);
+  from.splice(index, 1);
+}
+
+const moveInList = (list, id, dir) => {
+  const index = list.findIndex((item) => item.id === id);
+
+  // If moving up, check it is not the first, else check it is not the last.
+  const condition = dir < 0 ? index > 0 : index < list.length - 1;
+  if (condition) {
+    list.splice(index + dir, 0, list.splice(index, 1)[0]);
+  }
+}
+
+const moveUpList = (list, id) => {
+  moveInList(list, id, -1);
+}
+
+const moveDnList = (list, id) => {
+  moveInList(list, id, 1);
+}
 
 // Stringified version for submitting in #buttons-selected.
-const selectedItems = computed(() => `[${listSelected.value.map((item) => `"${item.name}"`).join(',')}]`);
+const selectedItems = computed(() => `[${listSelected.map((item) => `"${item.name}"`).join(',')}]`);
 
 // Update textarea
 watch(() => selectedItems.value, (currSelected, prevSelected) => {

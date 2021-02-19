@@ -10,6 +10,10 @@
       v-on:focus="expand"
       v-on:blur="hide"
       @keyup.esc="hide"
+      @keyup.up="move('up')"
+      @keyup.down="move('down')"
+      @keyup.left="move('left')"
+      @keyup.right="move('right')"
     >
       <span class="visually-hidden" aria-hidden="true">{{ id }}</span>
     </a>
@@ -23,6 +27,7 @@ import { defineProps, ref } from 'vue';
 const props = defineProps({
   name: String,
   id: String,
+  actions: Object,
 });
 
 const isExpanded = ref(false);
@@ -38,6 +43,12 @@ const toggle = () => {
 }
 const selectButton = () => {
   toggle();
+}
+
+const move = (dir) => {
+  if (props.actions[dir]) {
+    props.actions[dir]();
+  }
 }
 
 const itemSelector = `ckeditor5-toolbar__item ckeditor5-toolbar__item-${props.id}`;
