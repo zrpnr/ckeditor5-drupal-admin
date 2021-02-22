@@ -13,11 +13,10 @@ export default {
       name: 'CKEditor5Admin',
     },
     rollupOptions: {
-      external: ['sortablejs', 'vue'],
+      external: ['sortablejs'],
       output: {
         globals: {
-          sortablejs: 'Sortable',
-          vue: 'Vue',
+          sortablejs: 'Sortable'
         },
         name: 'CKEDITOR5_ADMIN'
       },
