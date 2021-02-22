@@ -20,3 +20,5 @@ and each function should be keyed by the event name.
 
 * onFocusDisabled (itemLabel) - User focuses an item in the "avilable" or "dividers" list
 * onFocusActive (itemLabel, position, listCount) - User focuses an item in the "active" list
+* onFocusActiveFirst (itemLabel)
+* onFocusActiveLast (itemLabel)

@@ -147,8 +147,22 @@ const onFocusDisabled = (element) => {
 }
 
 const onFocusActive = (element) => {
-  if (announcements && announcements.onFocusActive) {
-    announcements.onFocusActive(element.id, listAvailable.indexOf(element) + 1, listAvailable.length);
+  if (announcements) {
+    const index = listSelected.indexOf(element);
+    const position = index + 1;
+    const length = listSelected.length;
+
+    if (index === 0 && announcements.onFocusActiveFirst) {
+      announcements.onFocusActiveFirst(element.id);
+    }
+    else if (position === length && announcements.onFocusActiveLast) {
+      announcements.onFocusActiveLast(element.id);
+    }
+    else {
+      if (announcements.onFocusActive) {
+        announcements.onFocusActive(element.id, position, length);
+      }
+    }
   }
 }
 

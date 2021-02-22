@@ -212,12 +212,24 @@
         }
       }
 
+      const add = "Press the down arrow key to add to the toolbar."
+      const remove = "Press the up arrow key to remove from the toolbar.";
+      const sort = "Move this button in the toolbar by pressing the left or right arrow keys.";
+      const sortFirst = "Move this button down the toolbar by pressing the right arrow key.";
+      const sortLast = "Move this button up the toolbar by pressing the left arrow key.";
+
       const announcements = {
         onFocusDisabled(name) {
-          Drupal.announce(`Available button ${name} may be added to the toolbar by pressing the down arrow key`);
+          Drupal.announce(`Available button ${name}. ${add}`);
         },
         onFocusActive(name) {
-          Drupal.announce(`Active button ${name} may be moved in the list with the left or right arrows and removed from the toolbar by pressing the up arrow key`);
+          Drupal.announce(`Active button ${name}. ${sort} ${remove}`);
+        },
+        onFocusActiveFirst(name) {
+          Drupal.announce(`Active button ${name} is first in the toolbar. ${sortFirst} ${remove}`);
+        },
+        onFocusActiveLast(name) {
+          Drupal.announce(`Active button ${name} is last in the toolbar. ${sortLast} ${remove}`);
         },
       }
     </script>
