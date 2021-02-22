@@ -104,16 +104,7 @@ const availableButtons = availableToolbar.toolbar.filter(
   (item) => !selectedButtons.includes(item)
 );
 
-const mapButtons = (name) => (
-  dividers.find((divider) => divider.name == name) ?? { name, id: name }
-);
-
-// Create reactive lists.
-const listSelected = shallowReactive(selectedButtons.map(mapButtons));
-const listAvailable = shallowReactive(availableButtons.map(mapButtons));
-
-// Without a copy, select by index would return an lower duplicate.
-const makeCopy = (original) => (Object.assign({}, original));
+const makeCopy = (original) => Object.assign({}, original);
 
 const copyToList = (from, to, element) => {
   to.push(makeCopy(element));
@@ -165,6 +156,16 @@ const onFocusActive = (element) => {
     }
   }
 }
+
+const mapButtons = (name) => {
+  const isDivider = dividers.find((divider) => divider.name == name)
+  // Make a copy so that multiple dividers have a unique index.
+  return isDivider ? makeCopy(isDivider) : { name, id: name };
+};
+
+// Create reactive lists.
+const listSelected = shallowReactive(selectedButtons.map(mapButtons));
+const listAvailable = shallowReactive(availableButtons.map(mapButtons));
 
 // Stringified version for submitting in #buttons-selected.
 const selectedItems = computed(() => `[${listSelected.map((item) => `"${item.name}"`).join(',')}]`);
