@@ -204,10 +204,28 @@
       ["heading","bold","italic","underline","code","strikethrough","subscript","superscript","blockQuote","link","bulletedList","numberedList","imageUpload"]
     </div>
     <textarea name="ckeditor5-toolbar__buttons-selected" id="ckeditor5-toolbar__buttons-selected" cols="30" rows="10">["heading","bold","italic","|","imageUpload"]</textarea>
+    <script>
+      // Dummy global Drupal object.
+      window.Drupal = {
+        announce(text) {
+          console.log(`Announcement: ${text}`);
+        }
+      }
+
+      const announcements = {
+        onFocusDisabled(name) {
+          Drupal.announce(`Available button ${name} may be added to the toolbar by pressing the down arrow key`);
+        },
+        onFocusActive(name) {
+          Drupal.announce(`Active button ${name} may be moved in the list with the left or right arrows and removed from the toolbar by pressing the up arrow key`);
+        },
+      }
+    </script>
     <script type="module">
       import app from '/src/main.js';
       const { mountApp } = app;
-      mountApp();
+      mountApp({ announcements });
+
     </script>
   </body>
 </html>

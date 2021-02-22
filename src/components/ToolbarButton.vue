@@ -34,6 +34,9 @@ const isExpanded = ref(false);
 
 const expand = () => {
   isExpanded.value = true;
+  if (props.actions.focus) {
+    props.actions.focus();
+  }
 }
 const hide = () => {
   isExpanded.value = false;

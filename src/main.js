@@ -5,11 +5,11 @@ import App from './App.vue'
 let instance;
 
 // createApp factory function.
-const createAdminApp = () => createApp(App);
+const createAdminApp = (props) => createApp(App, props);
 
-const mountApp = () => {
+const mountApp = (options) => {
   try {
-    instance = createAdminApp();
+    instance = createAdminApp(options);
     instance.mount('#ckeditor5-toolbar__app');
   } catch (error) {
     console.error('Could not mount CKEditor5 admin app', error);

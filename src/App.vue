@@ -13,7 +13,10 @@
           <ToolbarButton
             :id="element.id"
             :name="element.name"
-            :actions="{ down: () => moveToList(listAvailable, listSelected, element) }"
+            :actions="{
+              down: () => moveToList(listAvailable, listSelected, element),
+              focus: () => onFocusDisabled(element),
+            }"
           />
         </template>
       </draggable>
@@ -32,7 +35,10 @@
           <ToolbarButton
             :id="element.id"
             :name="element.name"
-            :actions="{ down: () => copyToList(dividers, listSelected, element) }"
+            :actions="{
+              down: () => copyToList(dividers, listSelected, element),
+              focus: () => onFocusDisabled(element),
+            }"
             :alert="() => listSelf('dividers', dividers, element)"
           />
         </template>
@@ -56,6 +62,7 @@
             up: () => moveToList(listSelected, listAvailable, element),
             left: () => moveUpList(listSelected, element),
             right: () => moveDnList(listSelected, element),
+            focus: () => onFocusActive(element),
           }"
         />
       </template>
@@ -64,9 +71,15 @@
 </template>
 
 <script setup>
-import { computed, shallowReactive, watch } from "vue";
+import { computed, defineProps, shallowReactive, watch } from "vue";
 import draggable from "vuedraggable";
 import ToolbarButton from './components/ToolbarButton.vue';
+
+const props = defineProps({
+  announcements: Object
+});
+
+const { announcements } = props;
 
 // init
 const available = document.getElementById("ckeditor5-toolbar__buttons-available");
@@ -125,6 +138,18 @@ const moveUpList = (list, element) => {
 
 const moveDnList = (list, element) => {
   moveInList(list, element, 1);
+}
+
+const onFocusDisabled = (element) => {
+  if (announcements && announcements.onFocusDisabled) {
+    announcements.onFocusDisabled(element.id);
+  }
+}
+
+const onFocusActive = (element) => {
+  if (announcements && announcements.onFocusActive) {
+    announcements.onFocusActive(element.id, listAvailable.indexOf(element) + 1, listAvailable.length);
+  }
 }
 
 // Stringified version for submitting in #buttons-selected.
