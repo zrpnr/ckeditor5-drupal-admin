@@ -84,17 +84,10 @@ const { announcements } = props;
 // init
 const available = document.getElementById("ckeditor5-toolbar__buttons-available");
 const selected = document.getElementById("ckeditor5-toolbar__buttons-selected");
-const selectedField = document.querySelector('.form-item-editor-settings-toolbar-items');
-[available, selected, selectedField].forEach((el) => {
-  if (el) {
-    el.style.display = "none";
-  }
-});
 
 // @todo: validate the provided values.
 const availableToolbar = JSON.parse(`{"toolbar": ${available.innerHTML} }`);
 const selectedToolbar = JSON.parse(`{"toolbar": ${selected.value} }`);
-
 
 // basic setup
 const group = "toolbar";
