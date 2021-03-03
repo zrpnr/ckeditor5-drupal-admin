@@ -15,9 +15,9 @@
       @keyup.left="move('left')"
       @keyup.right="move('right')"
     >
-      <span class="visually-hidden" aria-hidden="true">{{ id }}</span>
+      <span class="visually-hidden" aria-hidden="true">{{ label }}</span>
     </a>
-    <span class="ckeditor5-toolbar__tooltip" role="tooltip">{{ id }}</span>
+    <span class="ckeditor5-toolbar__tooltip" role="tooltip">{{ label }}</span>
   </li>
 </template>
 
@@ -26,6 +26,7 @@ import { defineProps, ref } from 'vue';
 
 const props = defineProps({
   name: String,
+  label: String,
   id: String,
   actions: Object,
 });

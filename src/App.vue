@@ -13,6 +13,7 @@
           <ToolbarButton
             :id="element.id"
             :name="element.name"
+            :label="element.label"
             :actions="{
               down: () => moveToList(listAvailable, listSelected, element),
               focus: () => onFocusDisabled(element),
@@ -35,6 +36,7 @@
           <ToolbarButton
             :id="element.id"
             :name="element.name"
+            :label="element.label"
             :actions="{
               down: () => copyToList(dividers, listSelected, element),
               focus: () => onFocusDisabled(element),
@@ -58,6 +60,7 @@
         <ToolbarButton
           :id="element.id"
           :name="element.name"
+          :label="element.label"
           :actions="{
             up: () => moveToList(listSelected, listAvailable, element),
             left: () => moveUpList(listSelected, element),
@@ -97,7 +100,7 @@ const parser = new Parser({
 
 const onFocusDisabled = (element) => {
   if (announcements && announcements.onFocusDisabled) {
-    announcements.onFocusDisabled(element.id);
+    announcements.onFocusDisabled(element.label);
   }
 }
 
@@ -108,14 +111,14 @@ const onFocusActive = (element) => {
     const length = listSelected.length;
 
     if (index === 0 && announcements.onFocusActiveFirst) {
-      announcements.onFocusActiveFirst(element.id);
+      announcements.onFocusActiveFirst(element.label);
     }
     else if (position === length && announcements.onFocusActiveLast) {
-      announcements.onFocusActiveLast(element.id);
+      announcements.onFocusActiveLast(element.label);
     }
     else {
       if (announcements.onFocusActive) {
-        announcements.onFocusActive(element.id, position, length);
+        announcements.onFocusActive(element.label, position, length);
       }
     }
   }
