@@ -6,7 +6,7 @@
         class="ckeditor5-toolbar__tray ckeditor5-toolbar-available__buttons"
         tag="ul"
         :list="listAvailable"
-        :group="group"
+        group="toolbar"
         itemKey="id"
       >
         <template #item="{ element }">
@@ -26,7 +26,7 @@
       <draggable
         class="ckeditor5-toolbar__tray ckeditor5-toolbar-divider__buttons"
         tag="ul"
-        :list="dividers"
+        :list="listDividers"
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
         itemKey="id"
         :clone="makeCopy"
@@ -51,7 +51,7 @@
       class="ckeditor5-toolbar__tray ckeditor5-toolbar-active__buttons"
       tag="ul"
       :list="listSelected"
-      :group="group"
+      group="toolbar"
       itemKey="id"
     >
       <template #item="{ element }">
@@ -74,6 +74,15 @@
 import { computed, defineProps, shallowReactive, watch } from "vue";
 import draggable from "vuedraggable";
 import ToolbarButton from './components/ToolbarButton.vue';
+import Parser from './parser';
+import {
+  makeCopy,
+  copyToList,
+  moveToList,
+  moveInList,
+  moveUpList,
+  moveDnList
+} from './utils';
 
 const props = defineProps({
   announcements: Object
@@ -81,48 +90,10 @@ const props = defineProps({
 
 const { announcements } = props;
 
-// init
-const available = document.getElementById("ckeditor5-toolbar__buttons-available");
-const selected = document.getElementById("ckeditor5-toolbar__buttons-selected");
-
-// @todo: validate the provided values.
-const availableToolbar = JSON.parse(`{"toolbar": ${available.innerHTML} }`);
-const selectedToolbar = JSON.parse(`{"toolbar": ${selected.value} }`);
-
-// basic setup
-const group = "toolbar";
-const dividers = [{ name: "|", id: "divider" }, { name: "-", id: "wrapping" }];
-const selectedButtons = [...selectedToolbar.toolbar];
-const availableButtons = availableToolbar.toolbar.filter(
-  (item) => !selectedButtons.includes(item)
-);
-
-const makeCopy = (original) => Object.assign({}, original);
-
-const copyToList = (from, to, element) => {
-  to.push(makeCopy(element));
-}
-const moveToList = (from, to, element) => {
-  to.push(element);
-  from.splice(from.indexOf(element), 1);
-}
-
-const moveInList = (list, element, dir) => {
-  const index = list.indexOf(element);
-  // If moving up, check it is not the first, else check it is not the last.
-  const condition = dir < 0 ? index > 0 : index < list.length - 1;
-  if (condition) {
-    list.splice(index + dir, 0, list.splice(index, 1)[0]);
-  }
-}
-
-const moveUpList = (list, element) => {
-  moveInList(list, element, -1);
-}
-
-const moveDnList = (list, element) => {
-  moveInList(list, element, 1);
-}
+const parser = new Parser({
+  availableId: 'ckeditor5-toolbar__buttons-available',
+  selectedId: 'ckeditor5-toolbar__buttons-selected'
+});
 
 const onFocusDisabled = (element) => {
   if (announcements && announcements.onFocusDisabled) {
@@ -150,21 +121,16 @@ const onFocusActive = (element) => {
   }
 }
 
-const mapButtons = (name) => {
-  const isDivider = dividers.find((divider) => divider.name == name)
-  // Make a copy so that multiple dividers have a unique index.
-  return isDivider ? makeCopy(isDivider) : { name, id: name };
-};
-
 // Create reactive lists.
-const listSelected = shallowReactive(selectedButtons.map(mapButtons));
-const listAvailable = shallowReactive(availableButtons.map(mapButtons));
+const listDividers = parser.getDividers();
+const listSelected = shallowReactive(parser.getSelectedButtons());
+const listAvailable = shallowReactive(parser.getAvailableButtons());
 
 // Stringified version for submitting in #buttons-selected.
 const selectedItems = computed(() => `[${listSelected.map((item) => `"${item.name}"`).join(',')}]`);
 
 // Update textarea
 watch(() => selectedItems.value, (currSelected, prevSelected) => {
-  selected.value = currSelected;
+  parser.setSelected(currSelected);
 });
 </script>
