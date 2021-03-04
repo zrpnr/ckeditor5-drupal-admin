@@ -7,9 +7,9 @@ let instance;
 // createApp factory function.
 const createAdminApp = (props) => createApp(App, props);
 
-const mountApp = (options) => {
+const mountApp = (options, language = { langcode: 'en', dir: 'ltr' }) => {
   try {
-    instance = createAdminApp(options);
+    instance = createAdminApp(options, language);
     instance.mount('#ckeditor5-toolbar__app');
   } catch (error) {
     console.error('Could not mount CKEditor5 admin app', error);

@@ -63,8 +63,8 @@
           :label="element.label"
           :actions="{
             up: () => moveToList(listSelected, listAvailable, element),
-            left: () => moveUpList(listSelected, element),
-            right: () => moveDnList(listSelected, element),
+            [sortUp]: () => moveUpList(listSelected, element),
+            [sortDn]: () => moveDnList(listSelected, element),
             focus: () => onFocusActive(element),
           }"
         />
@@ -88,10 +88,15 @@ import {
 } from './utils';
 
 const props = defineProps({
-  announcements: Object
+  announcements: Object,
+  language: Object,
 });
 
-const { announcements } = props;
+const { announcements, language } = props;
+const { dir } = language;
+
+const sortUp = dir === 'rtl' ? 'right' : 'left';
+const sortDn = dir === 'rtl' ? 'left' : 'right';
 
 const parser = new Parser({
   availableId: 'ckeditor5-toolbar__buttons-available',
