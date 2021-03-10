@@ -1,9 +1,9 @@
 <template>
-  <div class="ckeditor5-toolbar--disabled">
+  <div class="ckeditor5-toolbar-disabled">
     <div class="ckeditor5-toolbar-available">
       <label for="ckeditor5-toolbar-available__buttons">Available buttons</label>
       <draggable
-        class="ckeditor5-toolbar__tray ckeditor5-toolbar-available__buttons"
+        class="ckeditor5-toolbar-tray ckeditor5-toolbar-available__buttons"
         tag="ul"
         :list="listAvailable"
         group="toolbar"
@@ -25,7 +25,7 @@
     <div class="ckeditor5-toolbar-divider">
       <label for="ckeditor5-toolbar-divider__buttons">Button divider</label>
       <draggable
-        class="ckeditor5-toolbar__tray ckeditor5-toolbar-divider__buttons"
+        class="ckeditor5-toolbar-tray ckeditor5-toolbar-divider__buttons"
         tag="ul"
         :list="listDividers"
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
@@ -50,7 +50,7 @@
   <div class="ckeditor5-toolbar-active">
     <label for="ckeditor5-toolbar-active__buttons">Active toolbar</label>
     <draggable
-      class="ckeditor5-toolbar__tray ckeditor5-toolbar-active__buttons"
+      class="ckeditor5-toolbar-tray ckeditor5-toolbar-active__buttons"
       tag="ul"
       :list="listSelected"
       group="toolbar"
@@ -99,8 +99,8 @@ const sortUp = dir === 'rtl' ? 'right' : 'left';
 const sortDn = dir === 'rtl' ? 'left' : 'right';
 
 const parser = new Parser({
-  availableId: 'ckeditor5-toolbar__buttons-available',
-  selectedId: 'ckeditor5-toolbar__buttons-selected'
+  availableId: 'ckeditor5-toolbar-buttons-available',
+  selectedId: 'ckeditor5-toolbar-buttons-selected'
 });
 
 const onFocusDisabled = (element) => {
