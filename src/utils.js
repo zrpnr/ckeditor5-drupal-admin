@@ -4,9 +4,17 @@ export const makeCopy = (original) => Object.assign({}, original);
 export const copyToList = (from, to, element) => {
   to.push(makeCopy(element));
 }
+
+const setFocus = (element) => {
+  setTimeout(()=> {
+    document.querySelector(`#${element.id}-button`).focus();
+  })
+}
+
 export const moveToList = (from, to, element) => {
   to.push(element);
   from.splice(from.indexOf(element), 1);
+  setFocus(element);
 }
 
 export const moveInList = (list, element, dir) => {
@@ -16,6 +24,7 @@ export const moveInList = (list, element, dir) => {
   if (condition) {
     list.splice(index + dir, 0, list.splice(index, 1)[0]);
   }
+  setFocus(element);
 }
 
 export const moveUpList = (list, element) => {

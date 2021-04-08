@@ -4,6 +4,7 @@
       :class="buttonSelector"
       role="button"
       href=""
+      :id="props.id + '-button'"
       :aria-describedby="tooltip"
       :aria-expanded="isExpanded"
       v-on:click.prevent="selectButton"
