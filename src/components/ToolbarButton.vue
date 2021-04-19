@@ -1,19 +1,13 @@
 <template>
-  <li :class="itemSelector"
+  <li
+      role="option"
+      :class="itemSelector"
       v-on:mouseover="expand"
       v-on:mouseout="hide"
       tabindex="0"
-      @keyup.esc="hide"
-      @keyup.up="move('up')"
-      @keyup.down="move('down')"
-      @keyup.left="move('left')"
-      @keyup.right="move('right')">
-    <span
-      :class="buttonSelector"
-      href=""
       :id="props.id + '-button'"
       :aria-describedby="tooltip"
-      :aria-expanded="isExpanded"
+      :data-tip-expanded="isExpanded"
       v-on:click.prevent="selectButton"
       v-on:focus="expand"
       v-on:blur="hide"
@@ -21,7 +15,10 @@
       @keyup.up="move('up')"
       @keyup.down="move('down')"
       @keyup.left="move('left')"
-      @keyup.right="move('right')"
+      @keyup.right="move('right')">
+    <span
+      :class="buttonSelector"
+      aria-hidden="true"
     >
     </span>
     <span :id="tooltip" class="ckeditor5-toolbar-tooltip" role="tooltip">{{ label }}</span>
