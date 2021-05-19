@@ -1,4 +1,5 @@
 <template>
+  <HelpText :items="toolbarHelpText" />
   <div class="ckeditor5-toolbar-disabled">
     <div class="ckeditor5-toolbar-available">
       <label for="ckeditor5-toolbar-available__buttons">Available buttons</label>
@@ -74,9 +75,10 @@
 </template>
 
 <script setup>
-import { computed, defineProps, shallowReactive, watch } from "vue";
-import draggable from "vuedraggable";
+import { computed, defineProps, shallowReactive, watch } from 'vue';
+import draggable from 'vuedraggable';
 import ToolbarButton from './components/ToolbarButton.vue';
+import HelpText from './components/HelpText.vue';
 import Parser from './parser';
 import {
   makeCopy,
@@ -84,15 +86,16 @@ import {
   moveToList,
   moveInList,
   moveUpList,
-  moveDnList
+  moveDnList,
 } from './utils';
 
 const props = defineProps({
   announcements: Object,
+  toolbarHelp: Array,
   language: Object,
 });
 
-const { announcements, language } = props;
+const { announcements, toolbarHelp, language } = props;
 const { dir } = language;
 
 const sortUp = dir === 'rtl' ? 'right' : 'left';
@@ -100,14 +103,14 @@ const sortDn = dir === 'rtl' ? 'left' : 'right';
 
 const parser = new Parser({
   availableId: 'ckeditor5-toolbar-buttons-available',
-  selectedId: 'ckeditor5-toolbar-buttons-selected'
+  selectedId: 'ckeditor5-toolbar-buttons-selected',
 });
 
 const onFocusDisabled = (element) => {
   if (announcements && announcements.onFocusDisabled) {
     announcements.onFocusDisabled(element.label);
   }
-}
+};
 
 const onFocusActive = (element) => {
   if (announcements) {
@@ -117,28 +120,41 @@ const onFocusActive = (element) => {
 
     if (index === 0 && announcements.onFocusActiveFirst) {
       announcements.onFocusActiveFirst(element.label);
-    }
-    else if (position === length && announcements.onFocusActiveLast) {
+    } else if (position === length && announcements.onFocusActiveLast) {
       announcements.onFocusActiveLast(element.label);
-    }
-    else {
+    } else {
       if (announcements.onFocusActive) {
         announcements.onFocusActive(element.label, position, length);
       }
     }
   }
-}
+};
 
 // Create reactive lists.
 const listDividers = parser.getDividers();
 const listSelected = shallowReactive(parser.getSelectedButtons());
 const listAvailable = shallowReactive(parser.getAvailableButtons());
 
+const toolbarHelpText = computed(() =>
+  toolbarHelp
+    .filter(
+      (helpItem) =>
+        listSelected.map((item) => item.name).includes(helpItem.button) ===
+        helpItem.condition,
+    )
+    .map((helpItem) => helpItem.message),
+);
+
 // Stringified version for submitting in #buttons-selected.
-const selectedItems = computed(() => `[${listSelected.map((item) => `"${item.name}"`).join(',')}]`);
+const selectedItems = computed(
+  () => `[${listSelected.map((item) => `"${item.name}"`).join(',')}]`,
+);
 
 // Update textarea
-watch(() => selectedItems.value, (currSelected, prevSelected) => {
-  parser.setSelected(currSelected);
-});
+watch(
+  () => selectedItems.value,
+  (currSelected, prevSelected) => {
+    parser.setSelected(currSelected);
+  },
+);
 </script>

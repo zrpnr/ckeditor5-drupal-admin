@@ -243,12 +243,25 @@
         onFocusActiveLast(name) {
           Drupal.announce(`Active button ${name} is last in the toolbar. ${sortLast} ${remove}`);
         },
-      }
+      };
+
+      const toolbarHelp = [
+        {
+          message: "The toolbar buttons that don't fit the user's browser window width will be grouped in a dropdown. You can explicitly configure multiple toolbar rows if you prefer that, by putting a Wrapping button divider wherever you want to start a new row.",
+          button: '-',
+          condition: false,
+        },
+        {
+          message: "You have configured a multi-row toolbar by using a Wrapping button divider. This may not work well in narrow browser windows. To use automatic grouping, remove any of these divider buttons.",
+          button: '-',
+          condition: true,
+        },
+      ];
     </script>
     <script type="module">
       import app from '/src/main.js';
       const { mountApp } = app;
-      mountApp({ announcements, language: { langcode: 'en', dir: 'ltr' } });
+      mountApp({ announcements, toolbarHelp });
 
     </script>
   </body>
