@@ -44,7 +44,7 @@
               focus: () => onFocusDisabled(element),
             }"
             :alert="() => listSelf('dividers', dividers, element)"
-            :divider="true"
+            data-divider="true"
           />
         </template>
       </draggable>
