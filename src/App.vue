@@ -9,6 +9,7 @@
         :list="listAvailable"
         group="toolbar"
         itemKey="id"
+        @add="onAddToAvailable"
       >
         <template #item="{ element }">
           <ToolbarButton
@@ -69,6 +70,7 @@
             [sortDn]: () => moveDownActiveButtons(listSelected, element),
             focus: () => onFocusActive(element),
           }"
+          :data-divider="listDividers.map(item => item.id).includes(element.id)"
         />
       </template>
     </draggable>
@@ -130,6 +132,20 @@ const onFocusActive = (element) => {
     }
   }
 };
+
+const onAddToAvailable = (event, two) => {
+  // If the moved item is a divider, it should not be added to the available
+  // buttons list.
+  if (event.item.matches('[data-divider="true"]')) {
+    const { newIndex } = event;
+    setTimeout(() => {
+      // Remove the divider button from the available buttons list. Draggable
+      // reassesses the lists during each drag event, so the DOM removal should
+      // not be disruptive.
+      document.querySelectorAll('.ckeditor5-toolbar-available__buttons li')[newIndex].remove();
+    });
+  }
+}
 
 // Create reactive lists.
 const listDividers = parser.getDividers();
