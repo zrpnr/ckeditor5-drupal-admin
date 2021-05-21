@@ -133,7 +133,7 @@ const onFocusActive = (element) => {
   }
 };
 
-const onAddToAvailable = (event, two) => {
+const onAddToAvailable = (event) => {
   // If the moved item is a divider, it should not be added to the available
   // buttons list.
   if (event.item.matches('[data-divider="true"]')) {
