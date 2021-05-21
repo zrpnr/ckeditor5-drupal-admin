@@ -39,10 +39,11 @@
             :name="element.name"
             :label="element.label"
             :actions="{
-              down: () => copyToList(dividers, listSelected, element),
+              down: () => copyToActiveButtons(dividers, listSelected, element),
               focus: () => onFocusDisabled(element),
             }"
             :alert="() => listSelf('dividers', dividers, element)"
+            :divider="true"
           />
         </template>
       </draggable>
@@ -63,9 +64,9 @@
           :name="element.name"
           :label="element.label"
           :actions="{
-            up: () => moveToList(listSelected, listAvailable, element),
-            [sortUp]: () => moveUpList(listSelected, element),
-            [sortDn]: () => moveDnList(listSelected, element),
+            up: () => moveToList(listSelected, listAvailable, element, listDividers.map(item => item.id).includes(element.id)),
+            [sortUp]: () => moveUpActiveButtons(listSelected, element),
+            [sortDn]: () => moveDownActiveButtons(listSelected, element),
             focus: () => onFocusActive(element),
           }"
         />
@@ -82,11 +83,11 @@ import HelpText from './components/HelpText.vue';
 import Parser from './parser';
 import {
   makeCopy,
-  copyToList,
+  copyToActiveButtons,
   moveToList,
-  moveInList,
-  moveUpList,
-  moveDnList,
+  moveWithinActiveButtons,
+  moveUpActiveButtons,
+  moveDownActiveButtons,
 } from './utils';
 
 const props = defineProps({
