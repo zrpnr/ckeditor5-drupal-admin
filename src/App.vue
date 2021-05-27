@@ -5,12 +5,12 @@
       <label id="ckeditor5-toolbar-available__buttons-label">Available buttons</label>
       <draggable
         class="ckeditor5-toolbar-tray ckeditor5-toolbar-available__buttons"
-        aria-labelledby="ckeditor5-toolbar-available__buttons-label"
         tag="ul"
         :list="listAvailable"
         group="toolbar"
         itemKey="id"
         @add="onAddToAvailable"
+        data-button-list="ckeditor5-toolbar-available__buttons"
       >
         <template #item="{ element }">
           <ToolbarButton
@@ -29,12 +29,12 @@
       <label id="ckeditor5-toolbar-divider__buttons-label">Button divider</label>
       <draggable
         class="ckeditor5-toolbar-tray ckeditor5-toolbar-divider__buttons"
-        aria-labelledby="ckeditor5-toolbar-divider__buttons-label"
         tag="ul"
         :list="listDividers"
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
         itemKey="id"
         :clone="makeCopy"
+        data-button-list="ckeditor5-toolbar-divider__buttons"
       >
         <template #item="{ element }">
           <ToolbarButton
@@ -56,11 +56,11 @@
     <label id="ckeditor5-toolbar-active__buttons-label">Active toolbar</label>
     <draggable
       class="ckeditor5-toolbar-tray ckeditor5-toolbar-active__buttons"
-      aria-labelledby="ckeditor5-toolbar-active__buttons-label"
       tag="ul"
       :list="listSelected"
       group="toolbar"
       itemKey="id"
+      data-button-list="ckeditor5-toolbar-active__buttons"
     >
       <template #item="{ element }">
         <ToolbarButton
@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, shallowReactive, watch } from 'vue';
+import { computed, defineProps, shallowReactive, watch, onUpdated, onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import ToolbarButton from './components/ToolbarButton.vue';
 import HelpText from './components/HelpText.vue';
@@ -170,6 +170,7 @@ const selectedItems = computed(
   () => `[${listSelected.map((item) => `"${item.name}"`).join(',')}]`,
 );
 
+
 // Update textarea
 watch(
   () => selectedItems.value,
@@ -177,4 +178,21 @@ watch(
     parser.setSelected(currSelected);
   },
 );
+
+const updateRoles = () => {
+  document.querySelectorAll('[data-button-list]').forEach((list) => {
+    const buttonListId = list.getAttribute('data-button-list');
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-orientation', 'horizontal');
+    list.setAttribute('aria-labelledby', `${buttonListId}-label`)
+  });
+}
+
+onMounted(() => {
+  updateRoles()
+});
+
+onUpdated(() => {
+  updateRoles()
+});
 </script>
