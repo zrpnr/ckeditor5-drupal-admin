@@ -195,8 +195,4 @@ const updateRoles = () => {
 onMounted(() => {
   updateRoles()
 });
-
-onUpdated(() => {
-  updateRoles()
-});
 </script>
