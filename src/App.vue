@@ -2,7 +2,7 @@
   <HelpText :items="toolbarHelpText" />
   <div class="ckeditor5-toolbar-disabled">
     <div class="ckeditor5-toolbar-available">
-      <label for="ckeditor5-toolbar-available__buttons">Available buttons</label>
+      <label id="ckeditor5-toolbar-available__buttons-label">Available buttons</label>
       <draggable
         class="ckeditor5-toolbar-tray ckeditor5-toolbar-available__buttons"
         tag="ul"
@@ -10,6 +10,7 @@
         group="toolbar"
         itemKey="id"
         @add="onAddToAvailable"
+        data-button-list="ckeditor5-toolbar-available__buttons"
       >
         <template #item="{ element }">
           <ToolbarButton
@@ -25,7 +26,7 @@
       </draggable>
     </div>
     <div class="ckeditor5-toolbar-divider">
-      <label for="ckeditor5-toolbar-divider__buttons">Button divider</label>
+      <label id="ckeditor5-toolbar-divider__buttons-label">Button divider</label>
       <draggable
         class="ckeditor5-toolbar-tray ckeditor5-toolbar-divider__buttons"
         tag="ul"
@@ -33,6 +34,7 @@
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
         itemKey="id"
         :clone="makeCopy"
+        data-button-list="ckeditor5-toolbar-divider__buttons"
       >
         <template #item="{ element }">
           <ToolbarButton
@@ -51,13 +53,14 @@
     </div>
   </div>
   <div class="ckeditor5-toolbar-active">
-    <label for="ckeditor5-toolbar-active__buttons">Active toolbar</label>
+    <label id="ckeditor5-toolbar-active__buttons-label">Active toolbar</label>
     <draggable
       class="ckeditor5-toolbar-tray ckeditor5-toolbar-active__buttons"
       tag="ul"
       :list="listSelected"
       group="toolbar"
       itemKey="id"
+      data-button-list="ckeditor5-toolbar-active__buttons"
     >
       <template #item="{ element }">
         <ToolbarButton
@@ -78,7 +81,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, shallowReactive, watch } from 'vue';
+import { computed, defineProps, shallowReactive, watch, onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import ToolbarButton from './components/ToolbarButton.vue';
 import HelpText from './components/HelpText.vue';
@@ -167,6 +170,7 @@ const selectedItems = computed(
   () => `[${listSelected.map((item) => `"${item.name}"`).join(',')}]`,
 );
 
+
 // Update textarea
 watch(
   () => selectedItems.value,
@@ -174,4 +178,21 @@ watch(
     parser.setSelected(currSelected);
   },
 );
+
+// @todo add these attributes directly to the sortable list when
+//    https://github.com/SortableJS/vue.draggable.next/pull/35 lands.
+//    onMounted and onUpdated can be removed as well if their only purpose is
+//    calling this function.
+const updateRoles = () => {
+  document.querySelectorAll('[data-button-list]').forEach((list) => {
+    const buttonListId = list.getAttribute('data-button-list');
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-orientation', 'horizontal');
+    list.setAttribute('aria-labelledby', `${buttonListId}-label`)
+  });
+}
+
+onMounted(() => {
+  updateRoles()
+});
 </script>

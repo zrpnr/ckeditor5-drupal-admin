@@ -4,9 +4,8 @@
       :class="buttonSelector"
       role="button"
       href=""
-      :id="props.id + '-button'"
-      :aria-describedby="tooltip"
-      :aria-expanded="isExpanded"
+      :id="buttonId"
+      :data-expanded="isExpanded"
       v-on:click.prevent="selectButton"
       v-on:focus="expand"
       v-on:blur="hide"
@@ -16,9 +15,9 @@
       @keyup.left="move('left')"
       @keyup.right="move('right')"
     >
-      <span class="visually-hidden" aria-hidden="true">{{ label }}</span>
+      <span class="visually-hidden">{{ label }}</span>
     </a>
-    <span :id="tooltip" class="ckeditor5-toolbar-tooltip" role="tooltip">{{ label }}</span>
+    <span class="ckeditor5-toolbar-tooltip" aria-hidden="true">{{ label }}</span>
   </li>
 </template>
 
@@ -58,6 +57,6 @@ const move = (dir) => {
 
 const itemSelector = `ckeditor5-toolbar-item ckeditor5-toolbar-item-${props.id}`;
 const buttonSelector = `ckeditor5-toolbar-button ckeditor5-toolbar-button-${props.id}`;
-const tooltip = `ckeditor5-toolbar-tooltip-${props.id}`
+const buttonId = `${props.id}-button-${Math.random().toString(36).substring(7)}`;
 
 </script>
