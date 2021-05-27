@@ -6,31 +6,28 @@ export const copyToActiveButtons = (from, to, element) => {
   setTimeout(() => {
     // A divider added to active buttons will be the last item in the list.
     // Focus that item.
-    document.querySelector('.ckeditor5-toolbar-active__buttons li:last-child a').focus();
+    document.querySelector('.ckeditor5-toolbar-active__buttons li:last-child').focus();
   });
 }
 
-const setFocus = (element) => {
-  setTimeout(()=> {
-    document.querySelector(`#${element.id}-button`).focus();
-  })
-}
-
-export const moveToList = (from, to, element, divider = false) => {
+export const moveToList = (from, to, element, divider = false, toActive = true ) => {
   const elementIndex = from.indexOf(element);
   if (!divider) {
     to.push(element);
-    setFocus(element);
+    // The selector for the list being moved to is determined by seeing if the
+    // element is being moved to the active or available button list.
+    const selector = toActive ? '.ckeditor5-toolbar-active__buttons' : '.ckeditor5-toolbar-available__buttons';
+    setTimeout(() => {
+      document.querySelector(`${selector} li:last-child`).focus();
+    });
   } else {
     // If this is a divider, then this is being called to remove it from the
     // active buttons list. Focus the item to the left of the removed divider.
     setTimeout(() => {
-      document.querySelector(`.ckeditor5-toolbar-active__buttons li:nth-child(${Math.max(elementIndex, 0)}) a`).focus();
+      document.querySelector(`.ckeditor5-toolbar-active__buttons li:nth-child(${Math.max(elementIndex, 0)})`).focus();
     });
-
   }
   from.splice(from.indexOf(element), 1);
-
 }
 
 export const moveWithinActiveButtons = (list, element, dir) => {
@@ -41,7 +38,7 @@ export const moveWithinActiveButtons = (list, element, dir) => {
     list.splice(index + dir, 0, list.splice(index, 1)[0]);
     // After rendering, focus the element that was just moved.
     setTimeout(() => {
-      document.querySelectorAll(`.ckeditor5-toolbar-active__buttons li`)[index + dir].querySelector('a').focus();
+      document.querySelectorAll(`.ckeditor5-toolbar-active__buttons li`)[index + dir].focus();
     });
   }
 }
