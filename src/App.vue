@@ -179,6 +179,10 @@ watch(
   },
 );
 
+// @todo add these attributes directly to the sortable list when
+//    https://github.com/SortableJS/vue.draggable.next/pull/35 lands.
+//    onMounted and onUpdated can be removed as well if their only purpose is
+//    calling this function.
 const updateRoles = () => {
   document.querySelectorAll('[data-button-list]').forEach((list) => {
     const buttonListId = list.getAttribute('data-button-list');
