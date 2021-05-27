@@ -14,6 +14,8 @@ export const moveToList = (from, to, element, divider = false, toActive = true )
   const elementIndex = from.indexOf(element);
   if (!divider) {
     to.push(element);
+    // The selector for the list being moved to is determined by seeing if the
+    // element is being moved to the active or available button list.
     const selector = toActive ? '.ckeditor5-toolbar-active__buttons' : '.ckeditor5-toolbar-available__buttons';
     setTimeout(() => {
       document.querySelector(`${selector} li:last-child`).focus();
