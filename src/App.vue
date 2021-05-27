@@ -53,10 +53,10 @@
     </div>
   </div>
   <div class="ckeditor5-toolbar-active">
-    <label for="ckeditor5-toolbar-active__buttons">Active toolbar</label>
+    <label id="ckeditor5-toolbar-active__buttons-label">Active toolbar</label>
     <draggable
       class="ckeditor5-toolbar-tray ckeditor5-toolbar-active__buttons"
-      id="ckeditor5-toolbar-active__buttons"
+      aria-labelledby="ckeditor5-toolbar-active__buttons-label"
       tag="ul"
       :list="listSelected"
       group="toolbar"
