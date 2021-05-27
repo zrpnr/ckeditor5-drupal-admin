@@ -12,6 +12,7 @@
       @keyup.down="move('down')"
       @keyup.left="move('left')"
       @keyup.right="move('right')"
+      v-on:click="selectButton"
   >
     <span
       :class="buttonSelector"
