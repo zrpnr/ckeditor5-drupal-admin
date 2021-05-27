@@ -5,7 +5,6 @@
       role="button"
       href=""
       :id="buttonId"
-      :aria-describedby="tooltip"
       :data-expanded="isExpanded"
       v-on:click.prevent="selectButton"
       v-on:focus="expand"
@@ -18,7 +17,7 @@
     >
       <span class="visually-hidden">{{ label }}</span>
     </a>
-    <span :id="tooltip" class="ckeditor5-toolbar-tooltip" aria-hidden="true">{{ label }}</span>
+    <span class="ckeditor5-toolbar-tooltip" aria-hidden="true">{{ label }}</span>
   </li>
 </template>
 
@@ -59,6 +58,5 @@ const move = (dir) => {
 const itemSelector = `ckeditor5-toolbar-item ckeditor5-toolbar-item-${props.id}`;
 const buttonSelector = `ckeditor5-toolbar-button ckeditor5-toolbar-button-${props.id}`;
 const buttonId = `${props.id}-button-${Math.random().toString(36).substring(7)}`;
-const tooltip = `ckeditor5-toolbar-tooltip-${props.id}-${Math.random().toString(36).substring(7)}`;
 
 </script>
