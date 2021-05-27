@@ -68,7 +68,7 @@
           :name="element.name"
           :label="element.label"
           :actions="{
-            up: () => moveToList(listSelected, listAvailable, element, listDividers.map(item => item.id).includes(element.id)),
+            up: () => moveToList(listSelected, listAvailable, element, listDividers.map(item => item.id).includes(element.id), false),
             [sortUp]: () => moveUpActiveButtons(listSelected, element),
             [sortDn]: () => moveDownActiveButtons(listSelected, element),
             focus: () => onFocusActive(element),
