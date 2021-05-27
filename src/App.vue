@@ -2,9 +2,10 @@
   <HelpText :items="toolbarHelpText" />
   <div class="ckeditor5-toolbar-disabled">
     <div class="ckeditor5-toolbar-available">
-      <label for="ckeditor5-toolbar-available__buttons">Available buttons</label>
+      <label id="ckeditor5-toolbar-available__buttons-label">Available buttons</label>
       <draggable
         class="ckeditor5-toolbar-tray ckeditor5-toolbar-available__buttons"
+        aria-labelledby="ckeditor5-toolbar-available__buttons-label"
         tag="ul"
         :list="listAvailable"
         group="toolbar"
@@ -25,9 +26,10 @@
       </draggable>
     </div>
     <div class="ckeditor5-toolbar-divider">
-      <label for="ckeditor5-toolbar-divider__buttons">Button divider</label>
+      <label id="ckeditor5-toolbar-divider__buttons-label">Button divider</label>
       <draggable
         class="ckeditor5-toolbar-tray ckeditor5-toolbar-divider__buttons"
+        aria-labelledby="ckeditor5-toolbar-divider__buttons-label"
         tag="ul"
         :list="listDividers"
         :group="{ name: 'toolbar', put: false, pull: 'clone', sort: 'false' }"
@@ -54,6 +56,7 @@
     <label for="ckeditor5-toolbar-active__buttons">Active toolbar</label>
     <draggable
       class="ckeditor5-toolbar-tray ckeditor5-toolbar-active__buttons"
+      id="ckeditor5-toolbar-active__buttons"
       tag="ul"
       :list="listSelected"
       group="toolbar"
