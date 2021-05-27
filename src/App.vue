@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, shallowReactive, watch, onUpdated, onMounted } from 'vue';
+import { computed, defineProps, shallowReactive, watch, onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import ToolbarButton from './components/ToolbarButton.vue';
 import HelpText from './components/HelpText.vue';
