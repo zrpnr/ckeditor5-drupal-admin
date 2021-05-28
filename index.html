@@ -216,6 +216,9 @@
       }
     </div>
     <textarea tabindex="-1" aria-hidden="true" name="ckeditor5-toolbar-buttons-selected" id="ckeditor5-toolbar-buttons-selected" cols="30" rows="10">["heading","bold","italic","|","imageUpload", "|"]</textarea>
+    <div class="visually-hidden" id="available-button-description">Press the down arrow key to add to the toolbar.</div>
+    <div class="visually-hidden" id="active-button-description">Move this button in the toolbar by pressing the left or right arrow keys. Press the up arrow key to remove from the toolbar.</div>
+
     <script>
       // Dummy global Drupal object.
       window.Drupal = {
@@ -224,24 +227,15 @@
         }
       }
 
-      const add = "Press the down arrow key to add to the toolbar."
-      const remove = "Press the up arrow key to remove from the toolbar.";
-      const sort = "Move this button in the toolbar by pressing the left or right arrow keys.";
-      const sortFirst = "Move this button down the toolbar by pressing the right arrow key.";
-      const sortLast = "Move this button up the toolbar by pressing the left arrow key.";
-
       const announcements = {
-        onFocusDisabled(name) {
-          Drupal.announce(`Available button ${name}. ${add}`);
+        onButtonMovedActive(name) {
+          Drupal.announce(`Button ${name} has been moved to the active toolbar.`);
         },
-        onFocusActive(name) {
-          Drupal.announce(`Active button ${name}. ${sort} ${remove}`);
+        onButtonCopiedActive(name) {
+          Drupal.announce(`Button ${name} has been copied to the active toolbar.`);
         },
-        onFocusActiveFirst(name) {
-          Drupal.announce(`Active button ${name} is first in the toolbar. ${sortFirst} ${remove}`);
-        },
-        onFocusActiveLast(name) {
-          Drupal.announce(`Active button ${name} is last in the toolbar. ${sortLast} ${remove}`);
+        onButtonMovedInactive(name) {
+          Drupal.announce(`Button ${name} has been removed from the active toolbar.`);
         },
       };
 
