@@ -18,7 +18,7 @@
             :name="element.name"
             :label="element.label"
             :actions="{
-              down: () => moveToList(listAvailable, listSelected, element),
+              down: () => moveToList(listAvailable, listSelected, element, announcements.onButtonMovedActive),
             }"
             listType="available"
           />
@@ -42,7 +42,7 @@
             :name="element.name"
             :label="element.label"
             :actions="{
-              down: () => copyToActiveButtons(dividers, listSelected, element),
+              down: () => copyToActiveButtons(dividers, listSelected, element, announcements.onButtonCopiedActive),
             }"
             :alert="() => listSelf('dividers', dividers, element)"
             data-divider="true"
@@ -68,7 +68,7 @@
           :name="element.name"
           :label="element.label"
           :actions="{
-            up: () => moveToList(listSelected, listAvailable, element, listDividers.map(item => item.id).includes(element.id), false),
+            up: () => moveToList(listSelected, listAvailable, element, announcements.onButtonMovedInactive, listDividers.map(item => item.id).includes(element.id), false),
             [sortUp]: () => moveUpActiveButtons(listSelected, element),
             [sortDn]: () => moveDownActiveButtons(listSelected, element),
           }"
