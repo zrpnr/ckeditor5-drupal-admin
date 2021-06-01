@@ -18,9 +18,9 @@
             :name="element.name"
             :label="element.label"
             :actions="{
-              down: () => moveToList(listAvailable, listSelected, element),
-              focus: () => onFocusDisabled(element),
+              down: () => moveToList(listAvailable, listSelected, element, announcements.onButtonMovedActive),
             }"
+            listType="available"
           />
         </template>
       </draggable>
@@ -42,11 +42,11 @@
             :name="element.name"
             :label="element.label"
             :actions="{
-              down: () => copyToActiveButtons(dividers, listSelected, element),
-              focus: () => onFocusDisabled(element),
+              down: () => copyToActiveButtons(dividers, listSelected, element, announcements.onButtonCopiedActive),
             }"
             :alert="() => listSelf('dividers', dividers, element)"
             data-divider="true"
+            listType="available"
           />
         </template>
       </draggable>
@@ -68,12 +68,12 @@
           :name="element.name"
           :label="element.label"
           :actions="{
-            up: () => moveToList(listSelected, listAvailable, element, listDividers.map(item => item.id).includes(element.id), false),
+            up: () => moveToList(listSelected, listAvailable, element, announcements.onButtonMovedInactive, listDividers.map(item => item.id).includes(element.id), false),
             [sortUp]: () => moveUpActiveButtons(listSelected, element),
             [sortDn]: () => moveDownActiveButtons(listSelected, element),
-            focus: () => onFocusActive(element),
           }"
           :data-divider="listDividers.map(item => item.id).includes(element.id)"
+          listType="active"
         />
       </template>
     </draggable>
@@ -111,30 +111,6 @@ const parser = new Parser({
   availableId: 'ckeditor5-toolbar-buttons-available',
   selectedId: 'ckeditor5-toolbar-buttons-selected',
 });
-
-const onFocusDisabled = (element) => {
-  if (announcements && announcements.onFocusDisabled) {
-    announcements.onFocusDisabled(element.label);
-  }
-};
-
-const onFocusActive = (element) => {
-  if (announcements) {
-    const index = listSelected.indexOf(element);
-    const position = index + 1;
-    const length = listSelected.length;
-
-    if (index === 0 && announcements.onFocusActiveFirst) {
-      announcements.onFocusActiveFirst(element.label);
-    } else if (position === length && announcements.onFocusActiveLast) {
-      announcements.onFocusActiveLast(element.label);
-    } else {
-      if (announcements.onFocusActive) {
-        announcements.onFocusActive(element.label, position, length);
-      }
-    }
-  }
-};
 
 const onAddToAvailable = (event) => {
   // If the moved item is a divider, it should not be added to the available

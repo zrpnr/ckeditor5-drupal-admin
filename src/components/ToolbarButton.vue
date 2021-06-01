@@ -13,12 +13,13 @@
       @keyup.left="move('left')"
       @keyup.right="move('right')"
       v-on:click="selectButton"
+      :aria-describedby="props.listType + '-button-description'"
   >
     <span
       :class="buttonSelector"
       :data-expanded="isExpanded"
     >
-      <span class="visually-hidden">{{ label }}</span>
+      <span class="visually-hidden">{{props.listType}} button {{ label }}</span>
     </span>
     <span class="ckeditor5-toolbar-tooltip" aria-hidden="true">{{ label }}</span>
   </li>
@@ -32,6 +33,7 @@ const props = defineProps({
   label: String,
   id: String,
   actions: Object,
+  listType: String,
 });
 
 const isExpanded = ref(false);

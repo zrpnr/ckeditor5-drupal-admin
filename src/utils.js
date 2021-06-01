@@ -1,17 +1,20 @@
-
 export const makeCopy = (original) => Object.assign({}, original);
 
-export const copyToActiveButtons = (from, to, element) => {
+export const copyToActiveButtons = (from, to, element, announceChange) => {
   to.push(makeCopy(element));
   setTimeout(() => {
     // A divider added to active buttons will be the last item in the list.
     // Focus that item.
     document.querySelector('.ckeditor5-toolbar-active__buttons li:last-child').focus();
+    if (announceChange) {
+      announceChange(element.label);
+    }
   });
 }
 
-export const moveToList = (from, to, element, divider = false, toActive = true ) => {
+export const moveToList = (from, to, element, announceChange, divider = false, toActive = true) => {
   const elementIndex = from.indexOf(element);
+
   if (!divider) {
     to.push(element);
     // The selector for the list being moved to is determined by seeing if the
@@ -25,6 +28,11 @@ export const moveToList = (from, to, element, divider = false, toActive = true )
     // active buttons list. Focus the item to the left of the removed divider.
     setTimeout(() => {
       document.querySelector(`.ckeditor5-toolbar-active__buttons li:nth-child(${Math.max(elementIndex, 0)})`).focus();
+    });
+  }
+  if (announceChange) {
+    setTimeout(() => {
+      announceChange(element.label);
     });
   }
   from.splice(from.indexOf(element), 1);
